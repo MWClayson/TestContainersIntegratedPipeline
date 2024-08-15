@@ -80,7 +80,7 @@ namespace TestContainersTTLIntegration
             var httpClient = new HttpClient();
 
             // Construct the request URI by specifying the scheme, hostname, assigned random host port, and the endpoint "uuid".
-            var requestUri = new UriBuilder(Uri.UriSchemeHttp, _MeshSandBoxContainer.Hostname, _Container1.GetMappedPublicPort(8080), "health").Uri;
+            var requestUri = new UriBuilder(Uri.UriSchemeHttp, _MeshSandBoxContainer.Hostname, _MeshSandBoxContainer.GetMappedPublicPort(80), "health").Uri;
 
             // Send an HTTP GET request to the specified URI and retrieve the response as a string.
             var result = await httpClient.GetAsync(requestUri);
