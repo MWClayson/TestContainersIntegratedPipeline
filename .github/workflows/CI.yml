@@ -1,0 +1,58 @@
+name: build and test
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
+
+env:
+  DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
+
+jobs:
+  build-and-test:
+
+    name: build-and-test
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - name: Clone mesh-sandbox
+      uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+      with:
+        depth: 1
+        branch: 'develop'
+        owner: 'NHSDigital'
+        repository: 'mesh-sandbox'
+          
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver: docker
+      
+    - name: Build mesh-sandbox
+      uses: docker/build-push-action@v6
+      with:
+        context: mesh-sandbox/
+        push: false
+        tags: mesh-sandbox:integrationTest
+        
+    - name: List images
+      run: docker images
+    
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
