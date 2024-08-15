@@ -34,7 +34,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         context: mesh-sandbox/
-        push: false
+        push: true
         tags: mesh-sandbox:integrationTest
         
     - name: List images
