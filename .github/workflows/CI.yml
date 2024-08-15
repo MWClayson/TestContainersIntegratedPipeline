@@ -33,7 +33,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        working-directory: mesh-sandbox/
+        context: mesh-sandbox/
         push: false
         tags: mesh-sandbox:Integration
     
