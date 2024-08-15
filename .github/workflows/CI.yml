@@ -19,6 +19,23 @@ jobs:
 
 
     steps:
+    - name: Clone mesh-sandbox
+      uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+      with:
+        depth: 1
+        branch: 'develop'
+        owner: 'NHSDigital'
+        repository: 'mesh-sandbox'
+          
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      with:
+        push: false
+        tags: mesh-sandbox:Integration
+    
     - uses: actions/checkout@v3
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
