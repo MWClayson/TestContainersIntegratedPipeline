@@ -1,4 +1,4 @@
-name: build and test
+falname: build and test
 
 on:
   push:
@@ -29,12 +29,14 @@ jobs:
           
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
+      with:
+        driver: docker
       
     - name: Build mesh-sandbox
       uses: docker/build-push-action@v6
       with:
         context: mesh-sandbox/
-        push: true
+        push: false
         tags: mesh-sandbox:integrationTest
         
     - name: List images
